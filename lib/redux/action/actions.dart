@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/model/app_state.dart';
+import 'package:my_app/model/image.dart';
 import 'package:my_app/model/tab_item.dart';
+import 'package:my_app/network/api_client.dart';
 import 'package:redux/redux.dart';
 import 'package:redux_thunk/redux_thunk.dart';
 
@@ -43,32 +46,23 @@ class ChangeTabAction {
   }
 }
 
-class GetImageAction {
-  @override
-  String toString() {
-    return 'GetImageAction';
-  }
-}
+class AddImagesAction {
+  final List<ImageEntity> items;
 
-class LoadedImageAction {
-  final Widget widget;
-
-  LoadedImageAction(this.widget);
+  AddImagesAction(this.items);
 
   @override
   String toString() {
-    return 'LoadedImageAction{widget: $widget}';
+    return 'AddImagesAction{items: $items}';
   }
 }
 
-ThunkAction loadOverviewImageAction = (Store store) async {
-  store.dispatch(GetImageAction());
-  _loadImage(
-          "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=2100&q=80")
-      .then((image) => store.dispatch(LoadedImageAction(image)));
-};
-
-Future<Widget> _loadImage(String url) async {
-  //await Future.delayed(Duration(seconds: 5));
-  return Image.network(url);
+ThunkAction<AppState> fetchItemAction() {
+  return (Store<AppState> store) async {
+    ApiClient().fetchImages().then(
+          (items) => store.dispatch(
+            AddImagesAction(items),
+          ),
+        );
+  };
 }

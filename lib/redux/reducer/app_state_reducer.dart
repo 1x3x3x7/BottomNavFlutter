@@ -10,5 +10,5 @@ AppState appReducer(AppState state, action) {
       tabState: tabReducer(state.tabState, action),
       isLoading: loadingReducer(state.isLoading, action),
       route: navigationReducer(state.route, action),
-      overviewImage: imageReducer(state.overviewImage, action));
+      images: imageReducer(state.images, action));
 }

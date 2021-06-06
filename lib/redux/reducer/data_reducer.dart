@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/model/app_state.dart';
+import 'package:my_app/model/image.dart';
 import 'package:my_app/redux/action/actions.dart';
 import 'package:redux/redux.dart';
 
-Reducer<Widget> imageReducer = combineReducers(
-    [TypedReducer(_getImageReducer), TypedReducer(_loadedImageReducer)]);
+Reducer<List<ImageEntity>> imageReducer =
+    combineReducers([TypedReducer(_addImagesReducer)]);
 
-Widget _getImageReducer(Widget widget, GetImageAction action) =>
-    Center(child: CircularProgressIndicator());
-
-Widget _loadedImageReducer(Widget widget, LoadedImageAction action) =>
-    action.widget;
+List<ImageEntity> _addImagesReducer(
+        List<ImageEntity> items, AddImagesAction action) =>
+    action.items;

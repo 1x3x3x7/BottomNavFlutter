@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:meta/meta.dart';
 import 'package:my_app/core/constant/app_routes.dart';
+import 'package:my_app/model/image.dart';
 import 'package:my_app/model/tab_state.dart';
 
 @immutable
@@ -10,13 +11,13 @@ class AppState {
   final TabState tabState;
   final bool isLoading;
   final List<String> route;
-  final Widget overviewImage;
+  final List<ImageEntity> images;
 
   AppState({
     required this.tabState,
     this.isLoading = false,
     this.route = const [AppRoutes.home_screen],
-    this.overviewImage = const Icon(Icons.image),
+    this.images = const [],
   });
 
   factory AppState.initial() {
@@ -27,12 +28,12 @@ class AppState {
       {TabState? tabState,
       bool? isLoading,
       List<String>? route,
-      Widget? overviewImage}) {
+      List<ImageEntity>? images}) {
     return AppState(
         tabState: tabState ?? this.tabState,
         isLoading: isLoading ?? this.isLoading,
         route: route ?? this.route,
-        overviewImage: overviewImage ?? this.overviewImage);
+        images: images ?? this.images);
   }
 
   @override
@@ -43,7 +44,7 @@ class AppState {
           tabState == other.tabState &&
           isLoading == other.isLoading &&
           route == other.route &&
-          overviewImage == other.overviewImage;
+          images == other.images;
 
   @override
   String toString() {
@@ -52,8 +53,5 @@ class AppState {
 
   @override
   int get hashCode =>
-      tabState.hashCode ^
-      isLoading.hashCode ^
-      route.hashCode ^
-      overviewImage.hashCode;
+      tabState.hashCode ^ isLoading.hashCode ^ route.hashCode ^ images.hashCode;
 }
